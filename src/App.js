@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { memo, useCallback, useState } from 'react';
 import './App.css';
 
 const phones = [
@@ -19,7 +19,7 @@ function App() {
 
   const emptyCart = useCallback(() => {
     setCart([]);
-  },[]);
+  }, []);
 
   return (
     <div className='wrapper'>
@@ -29,7 +29,8 @@ function App() {
   );
 }
 
-const Products = ({ products, addToCart }) => {
+// we prevent rendering if props(products, addToCart) have not changed (React.memo)
+const Products = memo(({ products, addToCart }) => {
   return (
     <>
       <h1>Products</h1>
@@ -47,9 +48,10 @@ const Products = ({ products, addToCart }) => {
       </div>
     </>
   );
-};
+})
 
-const Product = ({ name, price, addToCart }) => {
+// we prevent re-rendering if props(name, price, addToCart) have not changed (React.memo)
+const Product = memo(({ name, price, addToCart }) => {
   return (
     <>
       <div className='product'>
@@ -63,9 +65,10 @@ const Product = ({ name, price, addToCart }) => {
       </div>
     </>
   );
-};
+});
 
-const Cart = ({ cart, emptyCart }) => {
+// we prevent re-rendering if props(cart, emptyCart) have not changed (React.memo)
+const Cart = memo(({ cart, emptyCart }) => {
   return (
     <>
       <h1>
@@ -78,6 +81,6 @@ const Cart = ({ cart, emptyCart }) => {
       </div>
     </>
   );
-};
+})
 
 export default App;
