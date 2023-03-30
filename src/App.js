@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import './App.css';
 
 const phones = [
@@ -11,13 +11,15 @@ function App() {
   const [products] = useState(phones);
   const [cart, setCart] = useState([]);
 
-  const addToCart = (product) => {
-    setCart((cart) => [...cart, product]);
-  };
+  //since the addToCart and emptyCart functions have not changed, we prevent re-renderind using useCallback
 
-  const emptyCart = () => {
+  const addToCart = useCallback((product) => {
+    setCart((cart) => [...cart, product]);
+  }, []);
+
+  const emptyCart = useCallback(() => {
     setCart([]);
-  };
+  },[]);
 
   return (
     <div className='wrapper'>
@@ -54,7 +56,9 @@ const Product = ({ name, price, addToCart }) => {
         <h2>{name}</h2>
         <h3>{price.toLocaleString()} ₺</h3>
         {addToCart && (
-          <button onClick={() => addToCart({name, price})}>Add to basket</button>
+          <button onClick={() => addToCart({ name, price })}>
+            Add to basket
+          </button>
         )}
       </div>
     </>
